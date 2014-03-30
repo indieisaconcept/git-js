@@ -378,6 +378,10 @@
       return data;
    };
 
+   Git.prototype._parsePush = function(push) {
+      return push;
+   };
+
    Git.prototype._run = function(command, then) {
       this._runCache.push([command, then]);
       this._schedule();
@@ -395,18 +399,19 @@
              command,
              {cwd: this._baseDir},
              function(err, stdout, stderr) {
+
+                var args = [].splice.call(arguments);
+
                 delete this._childProcess;
 
                 if(err) {
-                   console.error(stderr);
                    this._runCache = [];
-                   then.call(this, err, null);
-                }
-                else {
-                   then.call(this, null, stdout);
                 }
 
+                then.apply(this, args);
+
                 process.nextTick(this._schedule.bind(this));
+
              }.bind(this));
       }
    };
