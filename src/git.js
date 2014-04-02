@@ -400,7 +400,7 @@
              {cwd: this._baseDir},
              function(err, stdout, stderr) {
 
-                var args = [].splice.call(arguments);
+                var args = [].slice.call(arguments);
 
                 delete this._childProcess;
 
